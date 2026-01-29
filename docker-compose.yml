@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  mongodb:
+    image: mongo:7.0
+    container_name: eduagent-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - eduagent-network
+    restart: unless-stopped
+
   eduagent:
     build:
       context: .
@@ -10,14 +21,15 @@ services:
     ports:
       - "3002:3002"   # Frontend (Vite dev server)
       - "5000:5000"   # Backend API
-      - "5431:5431"   # PostgreSQL
+      - "5431:5432"   # PostgreSQL (external:internal)
     environment:
       - NODE_ENV=production
       - DB_HOST=localhost
-      - DB_PORT=5431
-      - DB_NAME=mydb
+      - DB_PORT=5432
+      - DB_NAME=eduagent
       - DB_USER=admin
       - DB_PASSWORD=admin123
+      - MONGODB_URI=mongodb://mongodb:27017/eduagent
     volumes:
       # Optional: Mount volumes for development
       # - ./server:/app/backend
@@ -25,12 +37,16 @@ services:
       # - /app/backend/node_modules
       # - /app/frontend/node_modules
       - postgres-data:/var/lib/postgresql/14/main
+    depends_on:
+      - mongodb
     restart: unless-stopped
     networks:
       - eduagent-network
 
 volumes:
   postgres-data:
+    driver: local
+  mongodb-data:
     driver: local
 
 networks:
