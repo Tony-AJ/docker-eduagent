@@ -40,12 +40,12 @@ const connectDB = async () => {
 
 // Start Server
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
   });
 }).catch((err) => {
   console.log("Database connection failed, starting server anyway for testing...");
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT} (DB Failed)`);
   });
 });
