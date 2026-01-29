@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: edutech:latest
     container_name: eduagent-app
     ports:
       - "3002:3002"   # Frontend (Vite dev server)
