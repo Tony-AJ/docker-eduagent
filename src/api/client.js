@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://localhost:5000/api', // Match server port
+  baseURL: 'http://10.190.105.165:5000/api', // Match server port
   headers: {
     'Content-Type': 'application/json'
   }
